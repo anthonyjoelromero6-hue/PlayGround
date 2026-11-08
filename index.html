@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#080b10" />
+  <link rel="icon" href="data:," />
+  <title>NEON FRONT — Arena táctica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app">
+    <canvas id="game"></canvas>
+    <div class="vignette"></div>
+    <div id="lobby" class="screen">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Neon Front inicio"><span class="brand-mark">N<span>F</span></span><span class="brand-name">NEON<br><b>FRONT</b></span></a>
+        <div class="top-center"><span class="live-dot"></span> CAMPO DE RECLUTAMIENTO <span class="top-divider">/</span> TEMPORADA 01</div>
+        <div class="top-right"><span class="ping"><i></i><i></i><i></i></span><span>CONEXIÓN ESTABLE</span><button class="icon-btn" id="soundBtn" aria-label="Sonido">♫</button></div>
+      </header>
+      <section class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> PROTOCOLO DE COMBATE <span class="eyebrow-code">NF—001</span></div>
+        <h1>ELIGE TU<br><span>CAMPO.</span></h1>
+        <p>Entra en la arena. Forma tu escuadrón.<br>Que hable tu puntería.</p>
+        <div class="hero-foot"><span class="scroll-mark">↓</span> SELECCIONA UN MODO PARA DESPLEGAR</div>
+      </section>
+      <section class="mode-dock" aria-label="Modos de juego">
+        <div class="dock-heading"><span>MODOS DISPONIBLES</span><span class="mode-count">04 <i>/ 04</i></span></div>
+        <div class="mode-grid">
+          <button class="mode-card" data-mode="1" aria-label="Seleccionar modo 1 contra 1"><span class="mode-index">01 <i>— DUELO</i></span><span class="mode-number">1<span>v</span>1</span><span class="mode-label">ENCUENTRO CERCANO</span><span class="mode-arrow">↗</span><span class="mode-accent"></span></button>
+          <button class="mode-card" data-mode="2" aria-label="Seleccionar modo 2 contra 2"><span class="mode-index">02 <i>— PAREJAS</i></span><span class="mode-number">2<span>v</span>2</span><span class="mode-label">COORDINA Y AVANZA</span><span class="mode-arrow">↗</span><span class="mode-accent"></span></button>
+          <button class="mode-card" data-mode="3" aria-label="Seleccionar modo 3 contra 3"><span class="mode-index">03 <i>— ESCUADRA</i></span><span class="mode-number">3<span>v</span>3</span><span class="mode-label">DOMINA LA ARENA</span><span class="mode-arrow">↗</span><span class="mode-accent"></span></button>
+          <button class="mode-card" data-mode="4" aria-label="Seleccionar modo 4 contra 4"><span class="mode-index">04 <i>— BATALLÓN</i></span><span class="mode-number">4<span>v</span>4</span><span class="mode-label">SIN RUTA DE ESCAPE</span><span class="mode-arrow">↗</span><span class="mode-accent"></span></button>
+        </div>
+        <div class="dock-bottom"><span><b class="keycap">W</b><b class="keycap">A</b><b class="keycap">S</b><b class="keycap">D</b> MOVER</span><span><b class="keycap">RMB</b> APUNTAR <i>·</i> <b class="keycap">LMB</b> DISPARAR</span><span class="dock-hint">HAZ CLIC EN UNA PLATAFORMA PARA EMPEZAR <b>↗</b></span></div>
+      </section>
+      <div class="lobby-footer"><span>NEON FRONT <i>©</i> 2026</span><span>ENTORNO DE ENTRENAMIENTO <i>·</i> TODOS LOS SISTEMAS OPERATIVOS</span><button id="controlsOpen">CONTROLES <b>＋</b></button></div>
+    </div>
+    <div id="controlsModal" class="modal hidden"><div class="modal-card"><button class="modal-close" id="controlsClose">×</button><div class="eyebrow">MANUAL DEL OPERADOR</div><h2>CONTROLES</h2><div class="control-list"><span>MOVER</span><b>W A S D</b><span>SALTAR</span><b>SPACE</b><span>APUNTAR</span><b>CLIC DERECHO</b><span>DISPARAR</span><b>CLIC IZQUIERDO</b><span>CAMBIAR ARMA</span><b>1 · 2 · 3 · 4</b><span>RECARGAR</span><b>R</b><span>CONTROL</span><b>DOS JOYSTICKS · R2</b></div><p>En móvil: usa el joystick izquierdo para moverte, arrastra a la derecha para mirar y toca los botones de acción.</p></div></div>
+    <div id="hud" class="hud hidden">
+      <div class="hud-top"><div class="hud-mode"><span class="live-dot"></span><span id="hudMode">1v1</span><i>·</i> ELIMINACIÓN</div><div class="hud-score"><span class="team-blue">AZUL <b id="blueScore">0</b></span><div class="score-track"><i id="scoreFill"></i></div><span class="team-red"><b id="redScore">0</b> ROJO</span></div><button id="exitBtn" class="exit-btn">SALIR <b>ESC</b></button></div>
+      <div class="hud-obj"><span class="obj-mark">◎</span><div><span>OBJETIVO DE MISIÓN</span><b>ELIMINA AL EQUIPO ROJO</b></div></div>
+      <div class="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+      <div class="hit-marker" id="hitMarker">×</div>
+      <div class="hud-bottom-left"><div class="health-wrap"><div class="health-icon">＋</div><div><div class="health-label"><span>SALUD</span><b id="healthNum">100</b></div><div class="bar"><i id="healthFill"></i></div></div></div><div class="armor-wrap"><span>◆</span><div><small>BLINDAJE</small><b id="armorNum">75</b></div></div></div>
+      <div class="hud-bottom-right"><div class="weapon-name"><span id="weaponType">ASALTO</span><b id="weaponName">VANTA K-7</b></div><div class="ammo"><strong id="ammoCount">30</strong><span>/ <i id="reserveCount">120</i></span><div class="reload-note" id="reloadNote">RECARGANDO</div></div><div class="weapon-keys"><span class="weapon-slot active" data-slot="1"><b>1</b><i>RIFLE</i></span><span class="weapon-slot" data-slot="2"><b>2</b><i>PISTOLA</i></span><span class="weapon-slot" data-slot="3"><b>3</b><i>ESCOPETA</i></span><span class="weapon-slot" data-slot="4"><b>4</b><i>RAYO</i></span></div></div>
+      <div id="toast" class="toast"></div>
+      <div id="mobileControls" class="mobile-controls">
+        <div class="joystick move-stick" id="moveStick"><div class="stick-ring"><i class="stick-dot"></i><span class="stick-dir up">▲</span><span class="stick-dir left">◀</span><span class="stick-dir right">▶</span><span class="stick-dir down">▼</span></div><span class="stick-caption">MOVER</span></div>
+        <div class="touch-actions"><button id="touchAim" class="touch-btn aim-touch"><span>◎</span>APUNTAR</button><button id="touchJump" class="touch-btn jump-touch"><span>↑</span>SALTAR</button><button id="touchShoot" class="touch-btn shoot-touch"><span>✦</span>DISPARAR</button></div>
+        <div id="lookZone" class="look-zone"><span>DESLIZA PARA MIRAR</span></div>
+      </div>
+    </div>
+    <div id="result" class="result hidden"><span class="eyebrow">SIMULACIÓN COMPLETADA</span><h2 id="resultTitle">VICTORIA</h2><p id="resultSub">La arena es tuya.</p><div class="result-stats"><div><b id="resultKills">0</b><span>ELIMINACIONES</span></div><div><b id="resultAccuracy">0%</b><span>PUNTERÍA</span></div><div><b id="resultMode">1v1</b><span>MODO</span></div></div><button id="rematchBtn" class="primary-btn">VOLVER AL LOBBY <span>↗</span></button></div>
+    <div id="deathOverlay" class="death-overlay hidden"><span>SEÑAL PERDIDA</span><b>REAPARECIENDO</b></div>
+  </main>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
