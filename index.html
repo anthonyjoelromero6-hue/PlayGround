@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#071018" />
+  <title>Neon Range — Simulador táctico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="game-shell">
+    <canvas id="game-canvas" aria-label="Campo de tiro 3D"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Neon Range"><span class="brand-mark">N<span>R</span></span><span class="brand-name">NEON<span>RANGE</span></span></a>
+      <div class="top-center"><span class="live-dot"></span><span>SIMULADOR TÁCTICO</span><i></i><span>SECTOR 07 / NIGHT SHIFT</span></div>
+      <div class="top-right"><span class="sound-icon">◖</span><span class="sound-label">AUDIO <b>ON</b></span><button id="sound-toggle" aria-label="Activar o desactivar sonido">⌁</button></div>
+    </header>
+
+    <section class="hud" id="hud" aria-live="polite">
+      <div class="hud-left">
+        <div class="hud-label">PUNTUACIÓN</div><div class="score-line"><span id="score">0000</span><span class="score-plus" id="score-plus"></span></div>
+        <div class="best-line">RÉCORD <span id="best">0000</span></div>
+      </div>
+      <div class="mission-card"><span class="mission-kicker"><span class="live-dot"></span> SESIÓN EN CURSO</span><strong id="mission-text">ELIMINA LOS OBJETIVOS</strong><span id="mission-sub">Mantén la precisión. No dejes escapar ninguno.</span></div>
+      <div class="hud-right"><div class="hud-label">TIEMPO RESTANTE</div><div class="timer" id="timer">01:30</div><div class="wave-line">OLEADA <span id="wave">01</span><span class="wave-divider">/</span> ∞</div></div>
+    </section>
+
+    <div class="crosshair" id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+    <div class="hit-marker" id="hit-marker">×</div>
+    <div class="toast" id="toast"></div>
+
+    <section class="weapon-hud" id="weapon-hud">
+      <div class="weapon-info"><div class="weapon-tag" id="weapon-tag">SIDEARM / 01</div><div class="weapon-name" id="weapon-name">VANTA 9</div><div class="weapon-meta" id="weapon-meta">SEMIAUTO <span>·</span> 9×19 MM</div></div>
+      <div class="ammo"><span id="ammo-current">12</span><i>/</i><span id="ammo-reserve">072</span><div class="ammo-caption">CARGADOR <b id="ammo-caption">01 / 06</b></div></div>
+      <div class="weapon-switch"><span><b>1</b> VANTA</span><span><b>2</b> KESTREL</span><span><b>3</b> BULLDOG</span></div>
+    </section>
+
+    <div class="bottom-hints" id="bottom-hints"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVER</span><span><kbd>SHIFT</kbd> CORRER</span><span><kbd>R</kbd> RECARGAR</span><span><kbd>ESC</kbd> PAUSA</span></div>
+    <div class="center-notice" id="center-notice"><span class="notice-line"></span><b>PAUSA</b><span>Presiona <kbd>ESC</kbd> para continuar</span></div>
+
+    <div class="mobile-controls" id="mobile-controls">
+      <div class="move-pad" id="move-pad"><div class="stick" id="stick"></div></div>
+      <button class="mobile-reload" id="mobile-reload">↻</button>
+      <button class="fire-button" id="fire-button"><span>FUEGO</span><b>●</b></button>
+      <div class="mobile-aim-zone" id="mobile-aim-zone"></div>
+    </div>
+
+    <section class="overlay" id="start-overlay">
+      <div class="overlay-content">
+        <div class="eyebrow"><span class="live-dot"></span> CENTRO DE ENTRENAMIENTO · 04:32 AM</div>
+        <h1>AFINA<br /><span>EL INSTINTO.</span></h1>
+        <p>Un cargador. Una noche. Demuestra que tienes lo necesario para dominar el campo.</p>
+        <div class="start-details"><div><span class="detail-icon">⌖</span><span><b>90 SEGUNDOS</b><small>La sesión empieza al entrar</small></span></div><div><span class="detail-icon">◉</span><span><b>OBJETIVOS MÓVILES</b><small>Apunta al núcleo para más puntos</small></span></div></div>
+        <button class="primary-button" id="start-button"><span>ENTRAR AL CAMPO</span><b>↗</b></button>
+        <div class="start-foot"><span>◉ &nbsp;WASD <i>para moverte</i></span><span>⌖ &nbsp;RATÓN <i>para apuntar</i></span><span>⏎ &nbsp;CLIC <i>para disparar</i></span></div>
+      </div>
+      <div class="overlay-side"><div class="side-index">NR — 07</div><div class="side-copy">PRECISIÓN<br />BAJO PRESIÓN.</div><div class="side-bottom">NIGHT SHIFT<br /><span>LIVE FIRE SIMULATION</span></div></div>
+    </section>
+
+    <section class="overlay result-overlay hidden" id="result-overlay">
+      <div class="result-box"><div class="eyebrow"><span class="live-dot"></span> SESIÓN FINALIZADA</div><h2 id="result-title">BUEN TRABAJO.</h2><p id="result-copy">El campo ya te está esperando otra vez.</p><div class="result-stats"><div><small>PUNTUACIÓN</small><b id="final-score">0000</b></div><div><small>PRECISIÓN</small><b id="accuracy">0<span>%</span></b></div><div><small>OBJETIVOS</small><b id="targets-hit">00</b></div></div><button class="primary-button" id="restart-button"><span>JUGAR DE NUEVO</span><b>↗</b></button></div>
+    </section>
+    <div class="screen-grain"></div>
+  </main>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
